@@ -14,7 +14,7 @@ function App() {
           <NavbarBrand href='/'> The Best Restaurant </NavbarBrand>
         </div>
       </Navbar>
-      <Menu dishes={dishes} />
+      <Menu dish_data={dishes} />
     </div>
   );
 }

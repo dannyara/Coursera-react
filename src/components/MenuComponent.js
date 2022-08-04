@@ -1,40 +1,31 @@
 import {Media, Card, CardImg, CardImgOverlay, CardTitle, CardText, CardBody} from "reactstrap";
 import {useState} from "react";
+import DishdetailComponent from "./DishdetailComponent";
 
-function Menu({dishes}) {
-    const [data, setDishes] = useState(dishes)
+function Menu({dish_data}) {
+    const [dishes, setDishes] = useState(dish_data)
     const [selectedDish, setSelectedDish] = useState(null)
 
     function onDishSelect(dish) {
         setSelectedDish(dish)
     }
     function renderDish(dish){
-        if(dish != null){
-            return(
-                <Card>
-                    <CardImg width='100%' object src={dish.image} alt={dish.name} />
-                    <CardBody>
-                        <CardTitle> {dish.name}</CardTitle>
-                        <CardText> {dish.description}</CardText>
-                    </CardBody>
-                </Card>
-            )
-        } else{
-            return <div> </div>
-        }
+        return(
+            <DishdetailComponent dish={dish}/>
+        )
     }
 
-    const menu = data.map((dish) => {
-        return (
-            <div key={dish.id} className="col-12 col-md-5 m-2">
-                <Card onClick={() => onDishSelect(dish)}>
-                    <CardImg width='100%' object src={dish.image} alt={dish.name} />
-                    <CardImgOverlay body className='ml-5'>
-                        <CardTitle heading> {dish.name} </CardTitle>
-                    </CardImgOverlay>
-                </Card>
-            </div>
-        )
+    const menu = dishes.map((dish) => {
+            return (
+                <div key={dish.id} className="col-12 col-md-5 m-2">
+                    <Card onClick={() => onDishSelect(dish)}>
+                        <CardImg width='100%' object src={dish.image} alt={dish.name} />
+                        <CardImgOverlay body className='ml-5'>
+                            <CardTitle heading> {dish.name} </CardTitle>
+                        </CardImgOverlay>
+                    </Card>
+                </div>
+            )
         }
     );
     return (
@@ -42,7 +33,7 @@ function Menu({dishes}) {
             <div className='row'>
                 {menu}
             </div>
-            <div className='row'>
+            <div>
                 {renderDish(selectedDish)}
             </div>
 
