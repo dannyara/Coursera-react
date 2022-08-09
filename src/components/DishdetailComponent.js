@@ -21,13 +21,13 @@ function DishDetail({dish}) {
     if (dish != null) {
         const renderComments = dish.comments.map((comment) => {
             if(dish.comments!= null){
-                let options = { year: 'numeric', month: 'short', day: 'numeric' };
-                const date = new Date(comment.date )
+                let options = { year: 'numeric', month: 'short', day: '2-digit'};
+                const date = new Intl.DateTimeFormat('en-US', options).format(new Date(Date.parse(comment.date)))
                 return(
                     <ul key={comment.id} className={'list-unstyled'}>
                         <li>
                             <div> {comment.comment}</div>
-                            <div> -- {comment.author}, {date.toLocaleDateString("en-US", options)}</div>
+                            <div> -- {comment.author}, {date}</div>
                         </li>
                     </ul>
                 )
@@ -36,13 +36,15 @@ function DishDetail({dish}) {
         })
 
         return (
-            <div className={'row'}>
-                <div className='col-12 col-md-5 m-1'>
-                    {renderDishes()}
-                </div>
-                <div  className='col-12 col-md-5 m-1'>
-                    <h4> Comments</h4>
-                    {renderComments}
+            <div className={'container'}>
+                <div className='row'>
+                    <div className='col-12 col-md-5 m-1'>
+                        {renderDishes()}
+                    </div>
+                    <div  className='col-12 col-md-5 m-1'>
+                        <h4> Comments</h4>
+                        {renderComments}
+                    </div>
                 </div>
             </div>
         )
