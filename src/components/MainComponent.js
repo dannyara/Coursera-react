@@ -4,6 +4,8 @@ import Menu from "../components/MenuComponent";
 import {useState} from "react";
 import {DISHES} from "../shared/Dishes";
 import DishDetail from "./DishdetailComponent";
+import Header from "./HeaderComponent";
+import Footer from "./FooterComponent";
 
 
 function MainComponent() {
@@ -13,14 +15,11 @@ function MainComponent() {
         setSelectedDish(dishID)
     }
     return (
-        <div className="front">
-            <Navbar dark color="primary">
-                <div className="container">
-                    <NavbarBrand href='/'> The Best Restaurant </NavbarBrand>
-                </div>
-            </Navbar>
+        <div>
+            <Header />
             <Menu dishes={dishes} onClick={(dishID) => onDishSelect(dishID)}/>
             <DishDetail dish={dishes.filter((dish) => dish.id === selectedDish)[0] }/>
+            <Footer />
         </div>
     );
 }
