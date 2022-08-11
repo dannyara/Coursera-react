@@ -10,6 +10,7 @@ import Contact from "../components/ContactComponent";
 import {COMMENTS} from "../shared/comments";
 import {PROMOTIONS} from "../shared/promotions";
 import {LEADERS} from "../shared/leaders";
+import DishDetail from "../components/DishdetailComponent";
 
 
 function Main() {
@@ -27,6 +28,14 @@ function Main() {
             />
         )
     }
+    //get parameter that is required for passing in id
+    const DishWithId = ({match}) => {
+        return(
+            <DishDetail dish={dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]}
+                        comments={comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))} />
+
+        );
+    };
     return (
         <div>
             <Header />
@@ -34,6 +43,7 @@ function Main() {
                 <Route path='/home' component={HomePage} />
                 <Route exact path='/menu' component={() => <Menu dishes={dishes}/>}/>
                 <Route exact path='/contact' component={Contact}/>
+                <Route path='/menu/:dishId' component={DishWithId}/>
                 <Redirect to='/home' />
             </Switch>
             <Footer />

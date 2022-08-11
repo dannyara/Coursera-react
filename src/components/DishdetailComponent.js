@@ -1,5 +1,16 @@
-import {Media, Card, CardImg, CardImgOverlay, CardTitle, CardText, CardBody, ListGroupItem} from "reactstrap";
+import {
+    Media,
+    Card,
+    CardImg,
+    CardImgOverlay,
+    CardTitle,
+    CardText,
+    CardBody,
+    ListGroupItem,
+    Breadcrumb, BreadcrumbItem
+} from "reactstrap";
 import {useState} from "react";
+import {Link} from "react-router-dom";
 
 
 function RenderComments({comment, date}){
@@ -13,9 +24,9 @@ function RenderComments({comment, date}){
     )
 }
 
-function DishDetail({dish}) {
+function DishDetail({dish, comments}) {
 
-    const renderDishes =() => {
+    const renderDish =() => {
         return(
             <Card>
                 <CardImg width='100%' object src={dish.image} alt={dish.name}/>
@@ -29,9 +40,9 @@ function DishDetail({dish}) {
     }
 
 
-    if (dish != null) {
-        const getComments = dish.comments.map((comment) => {
-            if(dish.comments!= null){
+    if (dish) {
+        const getComments = comments.map((comment) => {
+            if(comments){
                 let options = { year: 'numeric', month: 'short', day: '2-digit'};
                 const date = new Intl.DateTimeFormat('en-US', options).format(new Date(Date.parse(comment.date)))
                 return <RenderComments comment={comment} date={date}/>
@@ -42,10 +53,18 @@ function DishDetail({dish}) {
         return (
             <div className={'container'}>
                 <div className='row'>
-                    <div className='col-12 col-md-5 m-1'>
-                        {renderDishes()}
+                    <Breadcrumb>
+                        <BreadcrumbItem><Link to='/home'>Menu</Link></BreadcrumbItem>
+                        <BreadcrumbItem active>{dish.name}</BreadcrumbItem>
+                    </Breadcrumb>
+                    <div className='col-12'>
+                        <h3> {dish.name}</h3>
+                        <hr />
                     </div>
-                    <div  className='col-12 col-md-5 m-1'>
+                    <div className='col-12 col-md-5 m-1'>
+                        {renderDish()}
+                    </div>
+                    <div className='col-12 col-md-5 m-1'>
                         <h4> Comments</h4>
                         {getComments}
                     </div>
@@ -53,7 +72,7 @@ function DishDetail({dish}) {
             </div>
         )
     } else {
-        return <div> </div>
+        return <div></div>
     }
 }
  export default DishDetail;
