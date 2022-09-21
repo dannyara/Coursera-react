@@ -15,10 +15,13 @@ import About from "../components/AboutUs";
 
 
 function Main() {
+    //state hooks replace class component state variables
     const [dishes, setDishes] = useState(DISHES)
     const [comments, setComments] = useState(COMMENTS)
     const [promos, setPromos] = useState(PROMOTIONS)
     const [leaders, setLeaders] = useState(LEADERS)
+
+
     const HomePage = () =>{
         return(
             //get featured dish by filtering
