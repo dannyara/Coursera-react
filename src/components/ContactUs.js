@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Breadcrumb, BreadcrumbItem, Button, Form, FormGroup, Label, Input, Card, Col} from "reactstrap";
+import {Breadcrumb, BreadcrumbItem, Button, Form, FormGroup, Label, Input, FormFeedback, Col} from "reactstrap";
 import {Link} from "react-router-dom";
 
 function Contact(props) {
@@ -10,19 +10,68 @@ function Contact(props) {
         message: '',
         phone :'',
         agree: '',
-        contactType: ''
+        contactType: '',
+        touched: {
+            firstname: false,
+            lastname: false,
+            phone: false,
+            email: false
+        }
+
     })
     const onInputChange = (field, formData) => {
         console.log(formData, field)
         const target = formData.target
         const val = target.type === 'checkbox' ? target.checked : target.value
-        setFormData({
+        setFormData(prevState => ({
+            ...prevState,
             [field]: val
-        })
+        }));
     }
     const onSubmit = () => {
         console.log('current state is ', JSON.stringify(formData))
     }
+    const handleOnBlur = (field) => {
+        console.log('form data is ', formData)
+        setFormData(prevState => ({
+            ...prevState,
+                touched: {
+                    [field]: true
+                }
+        }));
+
+    }
+
+
+    const validate = (firstname, lastname, phone, email) => {
+        const errors = {
+            firstname: '',
+            lastname: '',
+            email: '',
+            phone: ''
+        };
+
+        if(formData.touched.firstname && firstname.length < 3){
+            errors.firstname = 'first name should be more than 3 chars'
+        }else if(firstname.length > 12){
+            errors.firstname = 'First name should be less than 12 chars'
+        }
+
+        if(formData.touched.lastname && lastname.length < 3){
+            errors.lastname = 'Last name should be more than 3 chars'
+        }else if(lastname.length > 12){
+            errors.lastname = 'Last name should be less than 12 chars'
+        }
+        const reg = /^\d+$/;
+        if(formData.touched.phone && !reg.test(phone)){ //if reg fails
+            errors.phone = 'Valid Phone num only'
+        }
+        if(formData.touched.email && email.split('').filter(x => x === '@').length !== 1){
+            errors.email = 'Invalid Email address'
+        }
+        return errors
+    }
+    const errors = validate(formData.firstname, formData.lastname, formData.email, formData.phone)
     return(
         <div className="container">
             <div className='row'>
@@ -77,10 +126,14 @@ function Contact(props) {
                                        id='firstname' name='firstname'
                                        placeholder='First Name'
                                        value={formData.firstname}
+                                       valid={errors.firstname === ''}
+                                       invalid={errors.firstname !== ''}
+                                       onBlur={() => handleOnBlur('firstname')}
                                        onChange={(data) => {
                                            onInputChange('firstname', data)
                                        }}
                                 />
+                                <FormFeedback> {errors.firstname}</FormFeedback>
 
                             </Col>
                         </FormGroup>
@@ -91,7 +144,11 @@ function Contact(props) {
                                 <Input type='text'
                                        id='lastname' name='lastname'
                                        placeholder='Last Name' value={formData.lastname}
+                                       valid={errors.lastname === ''}
+                                       invalid={errors.lastname !== ''}
+                                       onBlur={() => handleOnBlur('lastname')}
                                        onChange={(text) => onInputChange('lastname', text)}/>
+                                <FormFeedback> {errors.lastname}</FormFeedback>
 
                             </Col>
                         </FormGroup>
@@ -102,7 +159,11 @@ function Contact(props) {
                                 <Input type='text'
                                        id='phone' name='phone'
                                        placeholder='Phone Number' value={formData.phone}
+                                       valid={errors.phone === ''}
+                                       invalid={errors.phone !== ''}
+                                       onBlur={() => handleOnBlur('phone')}
                                        onChange={(text) => onInputChange('phone', text)}/>
+                                <FormFeedback> {errors.phone}</FormFeedback>
 
                             </Col>
                         </FormGroup>
@@ -113,7 +174,11 @@ function Contact(props) {
                                 <Input type='text'
                                        id='email' name='email'
                                        placeholder='Email' value={formData.email}
+                                       valid={errors.email === ''}
+                                       invalid={errors.email !== ''}
+                                       onBlur={() => handleOnBlur('email')}
                                        onChange={(text) => onInputChange('email', text)}/>
+                                <FormFeedback> {errors.email}</FormFeedback>
 
                             </Col>
                         </FormGroup>

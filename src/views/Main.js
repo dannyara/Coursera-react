@@ -1,6 +1,5 @@
 import '../App.css';
 import Menu from "../components/Menu";
-import {useState} from "react";
 import Home from "../components/Home";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
