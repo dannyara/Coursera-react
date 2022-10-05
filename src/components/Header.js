@@ -1,15 +1,39 @@
-import React from "react";
-import {Collapse, Jumbotron, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem} from "reactstrap";
+import React, {useState} from "react";
+import {
+    Collapse,
+    Jumbotron,
+    Nav,
+    Navbar,
+    NavbarBrand,
+    NavbarToggler,
+    Modal,
+    NavItem,
+    ModalHeader,
+    ModalBody, Button, ModalFooter
+} from "reactstrap";
 import {NavLink} from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-function Header(){
+
+function Header({args}){
     const [isOpen, setIsOpen] = React.useState(false)
+    const [showModal, setShowModal] = React.useState(false)
     const toggleNav = () => {
         setIsOpen(!isOpen)
     }
+    const toggleModal = () => setShowModal(!showModal);
+    console.log(showModal)
+    const [modal, setModal] = useState(false);
+
+    const toggle = () => setModal(!modal);
     return(
         <>
+            <Modal isOpen={showModal} toggle={toggleModal}>
+                <ModalHeader toggle={toggleModal}> Login</ModalHeader>
+                <ModalBody> fd
+                </ModalBody>
+            </Modal>
             <Navbar dark expand='md'>
                 <div className="container">
                     <NavbarToggler onClick={toggleNav} />
@@ -35,6 +59,13 @@ function Header(){
                                <NavLink className='nav-link' to="/contact">
                                    <span className="fa fa-address-card fa-lg"/> Contact
                                </NavLink>
+                           </NavItem>
+                       </Nav>
+                       <Nav className='ml-auto' navbar>
+                           <NavItem>
+                               <Button outline onClick={toggleModal}>
+                                   <span className='fa fa-sign-in fa-lg'>Login</span>
+                               </Button>
                            </NavItem>
                        </Nav>
                    </Collapse>
